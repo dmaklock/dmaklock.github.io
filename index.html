@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Mini App - Оплата Stars</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<h1>Оплата через Telegram Stars</h1>
+<p>Нажмите кнопку ниже, чтобы оплатить 20 ⭐️.</p>
+<button id="payButton">Оплатить 20 ⭐️</button>
+<div id="status"></div>
+
+<script>
+    // Инициализация Telegram Web App
+    const webApp = window.Telegram.WebApp;
+
+    // Обработчик нажатия кнопки оплаты
+    document.getElementById('payButton').addEventListener('click', () => {
+        // Создание инвойса
+        webApp.openInvoice({
+            title: "Оплата 20 ⭐️",
+            description: "Оплатите 20 Telegram Stars для доступа к премиум-функциям.",
+            currency: "XTR", // Валюта Telegram Stars
+            prices: [{ label: "20 ⭐️", amount: 2000 }], // Сумма в копейках (20 звезд = 2000 копеек)
+            payload: "unique_payment_id_12345", // Уникальный идентификатор платежа
+        });
+    });
+
+    // Обработка события закрытия инвойса
+    webApp.onEvent('invoiceClosed', (event) => {
+        const statusElement = document.getElementById('status');
+        if (event.status === 'paid') {
+            statusElement.textContent = "Оплата прошла успешно! Спасибо за покупку.";
+            statusElement.style.color = "green";
+        } else {
+            statusElement.textContent = "Оплата отменена или не удалась.";
+            statusElement.style.color = "red";
+        }
+    });
+
+    // Инициализация Web App
+    webApp.ready();
+</script>
+</body>
+</html>

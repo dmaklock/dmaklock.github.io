@@ -38,7 +38,9 @@
 
 <script>
     // Инициализация Telegram Web App
+    alert(window.Telegram || "Telegram undefined")
     const webApp = window.Telegram.WebApp;
+    alert(webApp || "webApp undefined")
 
     // Обработчик нажатия кнопки оплаты
     document.getElementById('payButton').addEventListener('click', () => {
